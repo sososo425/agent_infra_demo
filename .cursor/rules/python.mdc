@@ -1,0 +1,71 @@
+---
+description: Python 编码规范。适用于所有 Python 文件。
+globs: "**/*.py"
+---
+
+# Python 编码规范
+
+## 版本与工具链
+
+- Python >= 3.10
+- 包管理: 优先使用 `uv`，其次 `poetry`，最后 `pip`
+- 格式化: `ruff format`
+- Lint: `ruff check`
+- 类型检查: `mypy` (strict mode)
+
+## 类型标注
+
+- 所有公开函数必须有完整的类型标注（参数 + 返回值）
+- 使用 `from __future__ import annotations` 启用延迟求值
+- 优先使用内置泛型 (`list[str]`, `dict[str, int]`) 而非 `typing.List`
+- 可选参数用 `X | None` 而非 `Optional[X]`
+
+```python
+def fetch_agent_status(agent_id: str, timeout: float = 30.0) -> AgentStatus | None:
+    ...
+```
+
+## 异常处理
+
+- 禁止裸 `except:` 或 `except Exception:`（除非是最外层兜底 + 日志）
+- 自定义异常必须继承自项目基类 `AppError`
+- 异常消息必须包含上下文信息
+
+```python
+class AgentNotFoundError(AppError):
+    def __init__(self, agent_id: str) -> None:
+        super().__init__(f"Agent not found: {agent_id}")
+```
+
+## 异步编程
+
+- I/O 密集型操作优先使用 `async/await`
+- 使用 `asyncio.TaskGroup` (3.11+) 管理并发任务，而非裸 `create_task`
+- 所有 async 函数必须处理 `asyncio.CancelledError`
+
+## 日志
+
+- 使用 `structlog` 或标准库 `logging` 的结构化模式
+- 禁止使用 `print()` 作为日志输出
+- 日志级别：DEBUG 用于开发调试，INFO 用于关键业务流程，WARNING 用于可恢复异常，ERROR 用于不可恢复异常
+
+## 项目结构
+
+```
+src/
+  <package_name>/
+    __init__.py
+    main.py
+    models/
+    services/
+    utils/
+tests/
+  test_*.py
+pyproject.toml
+```
+
+## 依赖管理
+
+- 所有依赖必须在 `pyproject.toml` 中声明，附带版本约束
+- 区分 `dependencies`（运行时）和 `dev-dependencies`（开发时）
+- 定期更新依赖，关注安全公告
