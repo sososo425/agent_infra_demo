@@ -1,6 +1,6 @@
 # 项目进展记录
 
-> 最后更新：2026-03-06
+> 最后更新：2026-03-09
 
 ## 已完成
 
@@ -21,19 +21,19 @@
 - [x] `README.md` — 项目说明与快速上手指南
 - [x] `Idea.md` — 图片引用修复（harness.png、agent-scripts.png）
 
+### 阶段三：机械强制约束（Mechanical Harness）✅
+
+- [x] `pyproject.toml` — 项目配置（ruff、mypy、pytest、coverage 配置）
+- [x] `Makefile` — 统一命令入口（make lint / make test / make format / make check / make audit）
+- [x] `.pre-commit-config.yaml` — Git 预提交钩子（ruff、ruff-format、mypy、check-no-todo、check-no-secrets）
+- [x] `scripts/check-no-todo.sh` — 负面约束脚本：检查代码中无 TODO/FIXME/HACK/XXX 残留
+- [x] `scripts/check-no-secrets.sh` — 安全约束脚本：检查无硬编码 Secret/API Key/Token
+
 ### 背景文档
 
 - [x] `Idea.md` — 与 Gemini 的对话记录，涵盖 Agent Harness Engineering 的原理、Hard/Soft Harness 区分、steipete/agent-scripts 分析、Cursor Rules 落地建议
 
 ## 待完成
-
-### 阶段三：机械强制约束（Mechanical Harness）
-
-- [ ] `pyproject.toml` — 项目配置（ruff、mypy、pytest 配置）
-- [ ] `Makefile` — 统一命令入口（make lint / make test / make format / make check）
-- [ ] `.pre-commit-config.yaml` — Git 预提交钩子（自动 lint、format、安全扫描）
-- [ ] `scripts/check-no-todo.sh` — 负面约束脚本：检查代码中无 TODO/FIXME 残留
-- [ ] `scripts/check-no-secrets.sh` — 安全约束脚本：检查无硬编码 Secret
 
 ### 阶段四：技术探索（Hard Harness）
 
