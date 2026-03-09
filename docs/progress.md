@@ -23,27 +23,27 @@
 
 ### 阶段三：机械强制约束（Mechanical Harness）✅
 
-- [x] `pyproject.toml` — 项目配置（ruff lint/format、mypy strict、pytest + coverage）
-  - ruff: 启用 E/W/F/I/N/UP/B/S/A/C4/T20/RET/SIM/ERA 规则集
-  - mypy: strict 模式，禁止未标注类型
-  - pytest: 覆盖率阈值 80%，自动收集 tests/ 目录
+- [x] `pyproject.toml` — 项目配置（合并两方案优势）
+  - 构建: hatchling + 版本锁定
+  - ruff: 15 个规则集（E/W/F/I/N/UP/B/S/A/C4/T20/ARG/RET/SIM/ERA）
+  - mypy: strict 模式 + show_error_codes
+  - pytest: strict-markers + strict-config
+  - coverage: 独立配置，branch=true，fail_under=80
 - [x] `Makefile` — 统一命令入口
-  - `make install`: 安装依赖 + 初始化 pre-commit
-  - `make lint`: ruff 检查
-  - `make format`: 格式化代码
-  - `make typecheck`: mypy 类型检查
-  - `make test`: 运行测试
+  - `make install` / `make install-dev`: 拆分安装 + pre-commit 初始化
+  - `make lint` / `make format` / `make format-check`: ruff 检查与格式化
+  - `make typecheck`: mypy（空目录自动跳过）
+  - `make test` / `make test-cov`: pytest（空目录自动跳过）+ 覆盖率报告
   - `make check`: 一键运行所有检查
-  - `make audit`: 依赖安全审计
-  - `make clean`: 清理缓存
+  - `make audit` / `make clean`: 安全审计 + 缓存清理
 - [x] `.pre-commit-config.yaml` — Git 预提交钩子
-  - trailing-whitespace / end-of-file-fixer / check-yaml / check-toml
-  - check-added-large-files (>500KB) / check-merge-conflict / detect-private-key
+  - pre-commit-hooks: trailing-whitespace / end-of-file / check-yaml / check-toml / large-files / merge-conflict / detect-private-key
   - ruff lint (--fix) + ruff format
-  - 自定义 check-no-todo + check-no-secrets
-- [x] `scripts/check-no-todo.sh` — 负面约束：扫描 src/ 中的 TODO/FIXME/HACK/XXX
-- [x] `scripts/check-no-secrets.sh` — 安全约束：扫描 src/ 中疑似硬编码的密钥模式
-- [x] `src/agent_infra_demo/__init__.py` — 源码包占位（确保工具链可用）
+  - 自定义: check-no-todo + check-no-secrets
+  - mirrors-mypy: 提交时自动类型检查 src/
+- [x] `scripts/check-no-todo.sh` — 负面约束脚本（多目录、多文件类型、自身排除、allowed: 豁免）
+- [x] `scripts/check-no-secrets.sh` — 安全约束脚本（多目录、多文件类型、占位符豁免、合并双方密钥模式）
+- [x] `src/agent_infra_demo/__init__.py` — 源码包占位
 - [x] `tests/__init__.py` — 测试包占位
 
 ### 背景文档
@@ -70,10 +70,20 @@
 ## 快速命令参考
 
 ```bash
-make install       # 安装依赖 + 初始化 pre-commit hooks
-make check         # 一键运行所有检查（lint + format + typecheck + todo + secrets）
+make install-dev   # 安装开发依赖 + 初始化 pre-commit hooks
+make check         # 一键运行所有检查（lint + format + typecheck + todo + secrets + test）
 make test          # 运行测试
+make test-cov      # 运行测试 + 覆盖率报告
 make format        # 格式化代码
 make audit         # 依赖安全审计
+make clean         # 清理缓存
 make help          # 查看所有可用命令
 ```
+
+## 分支说明
+
+| 分支 | 内容 |
+| :--- | :--- |
+| `main` | 合并后的最佳版本（oversea + domestic 取长补短） |
+| `oversea` | 阶段三方案 A 备份（Cursor Agent 生成） |
+| `domestic` | 阶段三方案 B 备份（另一个 AI Agent 生成） |

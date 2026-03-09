@@ -20,7 +20,7 @@
 ├── README.md                 # 项目说明与快速上手
 ├── Idea.md                   # 项目构思记录（与 Gemini 的对话）
 ├── pyproject.toml            # 项目配置（ruff、mypy、pytest）
-├── Makefile                  # 统一命令入口（make check / make test）
+├── Makefile                  # 统一命令入口（make lint / make test / make check）
 ├── .pre-commit-config.yaml   # Git 预提交钩子
 ├── .cursor/
 │   └── rules/                # Cursor Rules（AI 编码规范）
@@ -34,12 +34,14 @@
 │   ├── agent-workflow.md     # Agent 工作流 SOP
 │   ├── harness-guide.md      # Harness 概念指南
 │   └── progress.md           # 项目进展与 TODO
-├── scripts/                  # 工具脚本
-│   ├── check-no-todo.sh      # 检查无 TODO 残留
-│   └── check-no-secrets.sh   # 检查无硬编码密钥
+├── images/                   # 图片资源
+│   ├── harness.png
+│   └── agent-scripts.png
+├── scripts/                  # 机械约束脚本
+│   ├── check-no-todo.sh      # 禁止 TODO/FIXME 残留
+│   └── check-no-secrets.sh   # 禁止硬编码 Secret
 ├── src/agent_infra_demo/     # 源代码
-├── tests/                    # 测试
-└── images/                   # 图片资源
+└── tests/                    # 测试
 ```
 
 ## 知识库索引（read_when 路由表）

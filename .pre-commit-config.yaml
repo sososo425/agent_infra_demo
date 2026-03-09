@@ -1,3 +1,10 @@
+# Agent Infra Demo — Git 预提交钩子
+# 安装: make install-dev (或 pip install pre-commit && pre-commit install)
+# 手动运行: pre-commit run --all-files
+
+default_language_version:
+  python: python3
+
 repos:
   - repo: https://github.com/pre-commit/pre-commit-hooks
     rev: v5.0.0
@@ -21,15 +28,21 @@ repos:
   - repo: local
     hooks:
       - id: check-no-todo
-        name: 检查无 TODO/FIXME 残留
-        entry: bash scripts/check-no-todo.sh
+        name: check-no-todo
+        entry: scripts/check-no-todo.sh
         language: system
         pass_filenames: false
-        types: [python]
 
       - id: check-no-secrets
-        name: 检查无硬编码 Secret
-        entry: bash scripts/check-no-secrets.sh
+        name: check-no-secrets
+        entry: scripts/check-no-secrets.sh
         language: system
         pass_filenames: false
-        types: [python]
+
+  - repo: https://github.com/pre-commit/mirrors-mypy
+    rev: v1.13.0
+    hooks:
+      - id: mypy
+        additional_dependencies: []
+        args: [--config-file=pyproject.toml]
+        files: ^src/
