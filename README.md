@@ -58,7 +58,7 @@ AI Agent 在编码时会自动遵循团队规范。
 | 阶段 | 内容 | 状态 |
 | :--- | :--- | :--- |
 | Level 1 | Soft Harness — Cursor Rules + AGENTS.md + 知识库 | ✅ 已完成 |
-| Level 2 | Mechanical Harness — pre-commit + Makefile + 自动检查 | 🔜 下一步 |
+| Level 2 | Mechanical Harness — pre-commit + Makefile + 自动检查 | ✅ 已完成 |
 | Level 3 | Hard Harness — Docker 沙箱 + 链路追踪 + 自动化评测 | 📋 规划中 |
 
 ## 技术栈

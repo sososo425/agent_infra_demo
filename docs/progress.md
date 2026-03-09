@@ -21,27 +21,44 @@
 - [x] `README.md` — 项目说明与快速上手指南
 - [x] `Idea.md` — 图片引用修复（harness.png、agent-scripts.png）
 
+### 阶段三：机械强制约束（Mechanical Harness）✅
+
+- [x] `pyproject.toml` — 项目配置（ruff lint/format、mypy strict、pytest + coverage）
+  - ruff: 启用 E/W/F/I/N/UP/B/S/A/C4/T20/RET/SIM/ERA 规则集
+  - mypy: strict 模式，禁止未标注类型
+  - pytest: 覆盖率阈值 80%，自动收集 tests/ 目录
+- [x] `Makefile` — 统一命令入口
+  - `make install`: 安装依赖 + 初始化 pre-commit
+  - `make lint`: ruff 检查
+  - `make format`: 格式化代码
+  - `make typecheck`: mypy 类型检查
+  - `make test`: 运行测试
+  - `make check`: 一键运行所有检查
+  - `make audit`: 依赖安全审计
+  - `make clean`: 清理缓存
+- [x] `.pre-commit-config.yaml` — Git 预提交钩子
+  - trailing-whitespace / end-of-file-fixer / check-yaml / check-toml
+  - check-added-large-files (>500KB) / check-merge-conflict / detect-private-key
+  - ruff lint (--fix) + ruff format
+  - 自定义 check-no-todo + check-no-secrets
+- [x] `scripts/check-no-todo.sh` — 负面约束：扫描 src/ 中的 TODO/FIXME/HACK/XXX
+- [x] `scripts/check-no-secrets.sh` — 安全约束：扫描 src/ 中疑似硬编码的密钥模式
+- [x] `src/agent_infra_demo/__init__.py` — 源码包占位（确保工具链可用）
+- [x] `tests/__init__.py` — 测试包占位
+
 ### 背景文档
 
 - [x] `Idea.md` — 与 Gemini 的对话记录，涵盖 Agent Harness Engineering 的原理、Hard/Soft Harness 区分、steipete/agent-scripts 分析、Cursor Rules 落地建议
 
 ## 待完成
 
-### 阶段三：机械强制约束（Mechanical Harness）
-
-- [ ] `pyproject.toml` — 项目配置（ruff、mypy、pytest 配置）
-- [ ] `Makefile` — 统一命令入口（make lint / make test / make format / make check）
-- [ ] `.pre-commit-config.yaml` — Git 预提交钩子（自动 lint、format、安全扫描）
-- [ ] `scripts/check-no-todo.sh` — 负面约束脚本：检查代码中无 TODO/FIXME 残留
-- [ ] `scripts/check-no-secrets.sh` — 安全约束脚本：检查无硬编码 Secret
-
 ### 阶段四：技术探索（Hard Harness）
 
-- [ ] `src/` 目录初始化 — 项目源码骨架
+- [ ] `src/` 业务代码 — 实际的 Agent Infra 功能实现
 - [ ] Docker 沙箱原型 — Agent 代码执行隔离环境
 - [ ] 链路追踪集成 — OpenTelemetry / LangSmith 接入
 - [ ] 自动化评测框架 — Agent 输出质量打分
-- [ ] GitLab CI/CD 流水线 — 自动化检查集成
+- [ ] GitLab CI/CD 流水线 — 自动化检查集成（复用 Makefile 命令）
 
 ### 持续优化
 
@@ -49,3 +66,14 @@
 - [ ] `docs/error-codes.md` — 错误码规范
 - [ ] `.cursor/rules/rust.mdc` — Rust 编码规范（引入 Rust 时创建）
 - [ ] 团队 Onboarding 文档 — 新成员如何使用本仓库的规范
+
+## 快速命令参考
+
+```bash
+make install       # 安装依赖 + 初始化 pre-commit hooks
+make check         # 一键运行所有检查（lint + format + typecheck + todo + secrets）
+make test          # 运行测试
+make format        # 格式化代码
+make audit         # 依赖安全审计
+make help          # 查看所有可用命令
+```

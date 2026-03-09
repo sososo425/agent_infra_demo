@@ -1,0 +1,35 @@
+repos:
+  - repo: https://github.com/pre-commit/pre-commit-hooks
+    rev: v5.0.0
+    hooks:
+      - id: trailing-whitespace
+      - id: end-of-file-fixer
+      - id: check-yaml
+      - id: check-toml
+      - id: check-added-large-files
+        args: ["--maxkb=500"]
+      - id: check-merge-conflict
+      - id: detect-private-key
+
+  - repo: https://github.com/astral-sh/ruff-pre-commit
+    rev: v0.11.2
+    hooks:
+      - id: ruff
+        args: [--fix]
+      - id: ruff-format
+
+  - repo: local
+    hooks:
+      - id: check-no-todo
+        name: 检查无 TODO/FIXME 残留
+        entry: bash scripts/check-no-todo.sh
+        language: system
+        pass_filenames: false
+        types: [python]
+
+      - id: check-no-secrets
+        name: 检查无硬编码 Secret
+        entry: bash scripts/check-no-secrets.sh
+        language: system
+        pass_filenames: false
+        types: [python]
